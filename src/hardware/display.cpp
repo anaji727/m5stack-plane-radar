@@ -8,7 +8,7 @@ void displayInit() {
   cfg.internal_spk = false;
   cfg.internal_mic = false;
   M5.begin(cfg);
-  tft.setRotation(0); // M5Stack's ILI9342 is natively 320x240.
+  tft.setRotation(1); // Rotate clockwise 90 degrees: portrait 240x320.
   tft.setBrightness(80);
   tft.setTextWrap(false);
   displayFontInit();
