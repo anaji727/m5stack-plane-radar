@@ -413,7 +413,9 @@ void drawAircraftTag(int x, int y, const services::adsb::Aircraft& plane) {
 
   const int line_h = s_draw->fontHeight();
   const int block_w = measureTagBlockWidth(plane);
-  const int block_h = line_h * 3;
+  const int line_count = (plane.callsign[0] != '\0') +
+                         (plane.type[0] != '\0') + (plane.alt[0] != '\0');
+  const int block_h = line_h * line_count;
   int ly = y - block_h / 2;
 
   const int symbol_half =
@@ -435,14 +437,14 @@ void drawAircraftTag(int x, int y, const services::adsb::Aircraft& plane) {
   if (plane.callsign[0] != '\0') {
     s_draw->setTextColor(radar::kColorLabel, radar::kColorBackground);
     s_draw->drawString(plane.callsign, anchor_x, ly);
+    ly += line_h;
   }
-  ly += line_h;
 
   if (plane.type[0] != '\0') {
     s_draw->setTextColor(radar::kColorTagType, radar::kColorBackground);
     s_draw->drawString(plane.type, anchor_x, ly);
+    ly += line_h;
   }
-  ly += line_h;
 
   if (plane.alt[0] != '\0') {
     s_draw->setTextColor(radar::kColorTagAltitude, radar::kColorBackground);
