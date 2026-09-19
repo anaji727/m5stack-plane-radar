@@ -50,6 +50,9 @@ void wifiOpenSetup() {
   wm.stopWebPortal(); defaults();
   wm.startConfigPortal(config::kPortalApName);
 }
+void wifiCloseSetup() {
+  if (wm.getConfigPortalActive()) wm.stopConfigPortal();
+}
 void wifiSetupBegin() {
   Preferences prefs; prefs.begin("m5radar",true);
   url=prefs.getString("url","http://192.168.1.101/dump1090/data/aircraft.json"); configured=prefs.getBool("ready",false) && validUrl(url);prefs.end();
