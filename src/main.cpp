@@ -6,6 +6,7 @@
 #include "services/radar_location.h"
 #include "services/wifi_setup.h"
 #include "ui/radar_display.h"
+#include "ui/aircraft_list.h"
 #include "ui/radar_range.h"
 namespace {
 uint32_t fetchedAt=0,drawnAt=0;
@@ -15,22 +16,21 @@ bool setupDismissed=false;
 uint8_t brightness=80;
 void textStyle() {tft.setFont(&fonts::Font0);tft.setTextSize(1);tft.setTextDatum(textdatum_t::top_left);tft.setTextColor(TFT_WHITE,TFT_BLACK);}
 void drawStatus() {
-  tft.fillRect(0,240,240,80,TFT_BLACK);textStyle();
+  ui::aircraftListDraw(240, 0, 80, 132);
+  tft.fillRect(240,132,80,108,TFT_BLACK);textStyle();
   const bool online=WiFi.status()==WL_CONNECTED;
   const bool stale=services::adsb::hasData() && services::adsb::ageMs()>config::kStaleMs;
-  tft.setCursor(6,246);tft.print("M5 RADAR");
   tft.setTextColor(online?TFT_GREEN:TFT_ORANGE,TFT_BLACK);
-  tft.setCursor(84,246);tft.print(online?"WiFi OK":"OFFLINE");
+  tft.setCursor(244,136);tft.print(online?"WiFi OK":"OFFLINE");
   tft.setTextColor(stale?TFT_ORANGE:TFT_WHITE,TFT_BLACK);
-  tft.setCursor(162,246);tft.print(settingsError()[0]?settingsError():!radarConfigured()?"SETUP NEEDED":stale?"STALE":services::adsb::status());
-  tft.setCursor(6,264);tft.printf("AC %u",static_cast<unsigned>(services::adsb::aircraftCount()));
-  tft.setCursor(84,264);
+  tft.setCursor(244,148);tft.print(settingsError()[0]?settingsError():!radarConfigured()?"SETUP NEEDED":stale?"STALE":services::adsb::status());
+  tft.setCursor(244,162);tft.printf("AC %u",static_cast<unsigned>(services::adsb::aircraftCount()));
+  tft.setCursor(244,174);
   if(services::adsb::hasData()) tft.printf("Age %lus",static_cast<unsigned long>(services::adsb::ageMs()/1000));else tft.print("Age --");
-  tft.setCursor(162,264);tft.printf("R %.1fkm",ui::radar::rangeCurrent().outer_km);
-  tft.setCursor(6,284);tft.print("A: Range");
-  tft.setCursor(84,284);tft.print("B: Light");
-  tft.setCursor(162,284);tft.print("C: Setup");
-  tft.setCursor(6,306);tft.print("m5radar.local");
+  tft.setCursor(244,186);tft.printf("R %.1fkm",ui::radar::rangeCurrent().outer_km);
+  tft.setCursor(244,202);tft.print("A: Range");
+  tft.setCursor(244,214);tft.print("B: Light");
+  tft.setCursor(244,226);tft.print("C: Setup");
 }
 void setupScreen() {
   tft.fillScreen(TFT_BLACK);textStyle();tft.setTextSize(2);
@@ -42,9 +42,9 @@ void setupScreen() {
   tft.setCursor(10,124);tft.print("Save aircraft.json URL and");
   tft.setCursor(10,140);tft.print("receiver latitude / longitude.");
   tft.setCursor(10,170);tft.print("Use Configure WiFi / Setup.");
-  tft.setCursor(10,204);tft.setTextColor(TFT_ORANGE,TFT_BLACK);tft.print(settingsError());
-  tft.setCursor(10,250);tft.setTextColor(TFT_WHITE,TFT_BLACK);tft.print("Hold C (1 sec): Back to radar");
-  tft.setCursor(10,266);tft.print("Save in browser before leaving.");
+  tft.setCursor(10,188);tft.setTextColor(TFT_ORANGE,TFT_BLACK);tft.print(settingsError());
+  tft.setCursor(10,208);tft.setTextColor(TFT_WHITE,TFT_BLACK);tft.print("Hold C (1 sec): Back to radar");
+  tft.setCursor(10,224);tft.print("Save in browser before leaving.");
 }
 }
 void setup() {
