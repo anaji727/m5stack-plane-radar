@@ -5,7 +5,7 @@ constexpr char kPortalApName[] = "M5Radar-Setup";
 constexpr char kPortalIp[] = "192.168.4.1";
 constexpr char kPortalHostname[] = "m5radar";
 constexpr char kPortalHostUrl[] = "m5radar.local";
-constexpr int kDisplayWidth = 240, kDisplayHeight = 320;
+constexpr int kDisplayWidth = 320, kDisplayHeight = 240;
 constexpr bool kDisplayRgbOrder = false;
 // Coordinates must be explicitly saved before aircraft are fetched.
 constexpr double kDefaultRadarLat = 0, kDefaultRadarLon = 0;
