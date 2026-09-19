@@ -14,24 +14,22 @@ bool setupShown=false;
 uint8_t brightness=80;
 void textStyle() {tft.setFont(&fonts::Font0);tft.setTextSize(1);tft.setTextDatum(textdatum_t::top_left);tft.setTextColor(TFT_WHITE,TFT_BLACK);}
 void drawStatus() {
-  tft.fillRect(240,0,80,240,TFT_BLACK);textStyle();
+  tft.fillRect(0,240,240,80,TFT_BLACK);textStyle();
   const bool online=WiFi.status()==WL_CONNECTED;
   const bool stale=services::adsb::hasData() && services::adsb::ageMs()>config::kStaleMs;
-  tft.setCursor(246,10);tft.print("M5 RADAR");
+  tft.setCursor(6,246);tft.print("M5 RADAR");
   tft.setTextColor(online?TFT_GREEN:TFT_ORANGE,TFT_BLACK);
-  tft.setCursor(246,34);tft.print(online?"WiFi OK":"OFFLINE");
+  tft.setCursor(84,246);tft.print(online?"WiFi OK":"OFFLINE");
   tft.setTextColor(stale?TFT_ORANGE:TFT_WHITE,TFT_BLACK);
-  tft.setCursor(246,52);tft.print(settingsError()[0]?settingsError():stale?"STALE":services::adsb::status());
-  tft.setCursor(246,77);tft.printf("AC %u",static_cast<unsigned>(services::adsb::aircraftCount()));
-  tft.setCursor(246,94);
+  tft.setCursor(162,246);tft.print(settingsError()[0]?settingsError():stale?"STALE":services::adsb::status());
+  tft.setCursor(6,264);tft.printf("AC %u",static_cast<unsigned>(services::adsb::aircraftCount()));
+  tft.setCursor(84,264);
   if(services::adsb::hasData()) tft.printf("Age %lus",static_cast<unsigned long>(services::adsb::ageMs()/1000));else tft.print("Age --");
-  tft.setCursor(246,118);tft.print("Outer km");
-  tft.setCursor(246,132);tft.printf("%.1f",ui::radar::rangeCurrent().outer_km);
-  tft.setCursor(246,160);tft.print("A: Range");
-  tft.setCursor(246,177);tft.print("B: Light");
-  tft.setCursor(246,194);tft.print("C: Setup");
-  tft.setCursor(246,220);tft.print("m5radar");
-  tft.setCursor(246,230);tft.print(".local");
+  tft.setCursor(162,264);tft.printf("R %.1fkm",ui::radar::rangeCurrent().outer_km);
+  tft.setCursor(6,284);tft.print("A: Range");
+  tft.setCursor(84,284);tft.print("B: Light");
+  tft.setCursor(162,284);tft.print("C: Setup");
+  tft.setCursor(6,306);tft.print("m5radar.local");
 }
 void setupScreen() {
   tft.fillScreen(TFT_BLACK);textStyle();tft.setTextSize(2);
@@ -40,10 +38,12 @@ void setupScreen() {
   tft.setCursor(10,52);tft.print("Connect WiFi: M5Radar-Setup");
   tft.setCursor(10,74);tft.print("Browser: http://192.168.4.1");
   if(WiFi.status()==WL_CONNECTED){tft.setCursor(10,96);tft.printf("LAN: http://%s",WiFi.localIP().toString().c_str());}
-  tft.setCursor(10,124);tft.print("Save aircraft.json URL + receiver lat/lon");
-  tft.setCursor(10,146);tft.print("Use Setup > WiFi / Setup > Parameters");
-  tft.setCursor(10,176);tft.setTextColor(TFT_ORANGE,TFT_BLACK);tft.print(settingsError());
-  tft.setCursor(10,210);tft.setTextColor(TFT_WHITE,TFT_BLACK);tft.print("After saving, use Exit to close setup.");
+  tft.setCursor(10,124);tft.print("Save aircraft.json URL and");
+  tft.setCursor(10,140);tft.print("receiver latitude / longitude.");
+  tft.setCursor(10,170);tft.print("Use Configure WiFi / Setup.");
+  tft.setCursor(10,204);tft.setTextColor(TFT_ORANGE,TFT_BLACK);tft.print(settingsError());
+  tft.setCursor(10,250);tft.setTextColor(TFT_WHITE,TFT_BLACK);tft.print("After saving, use Exit");
+  tft.setCursor(10,266);tft.print("to close setup.");
 }
 }
 void setup() {
